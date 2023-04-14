@@ -1,14 +1,16 @@
-// const { NotImplementedError } = require("../extensions/index.js");
+const { NotImplementedError } = require("../extensions/index.js");
 class VigenereCipheringMachine {
   constructor(direct = true) {
     this.direct = direct;
     this.regex = new RegExp(/[a-z]/gi);
   }
+
   checkArguments() {
-    if (!arguments || arguments.length !== 2 || typeof arguments[0] !== "string" || typeof arguments[1] !== "string") {
+    if (arguments.length !== 2 || typeof arguments[0] !== "string" || typeof arguments[1] !== "string") {
       throw new Error("Incorrect arguments!");
     }
   }
+
   generateKeyword(message, key) {
     let keyword = "";
 
@@ -28,32 +30,33 @@ class VigenereCipheringMachine {
     this.checkArguments(message, key);
     let keyword = this.generateKeyword(message, key);
     message = message.toUpperCase();
-    let cipher = "";
+
+    let encryptedMessage = "";
     for (let i = 0; i < message.length; i++) {
       if (message[i].match(this.regex)) {
-        let cipheredLetterCode = 65 + ((message.charCodeAt(i) + keyword.charCodeAt(i)) % 26);
-        cipher += String.fromCharCode(cipheredLetterCode);
+        let encryptedLetterCode = 65 + ((message.charCodeAt(i) + keyword.charCodeAt(i)) % 26);
+        encryptedMessage += String.fromCharCode(encryptedLetterCode);
       } else {
-        cipher += message[i];
+        encryptedMessage += message[i];
       }
     }
-    return this.direct ? cipher : cipher.split("").reverse().join("");
+    return this.direct ? encryptedMessage : encryptedMessage.split("").reverse().join("");
   }
   decrypt(message, key) {
     this.checkArguments(message, key);
-
     let keyword = this.generateKeyword(message, key);
     message = message.toUpperCase();
-    let deciphered = "";
+
+    let decryptedMessage = "";
     for (let i = 0; i < message.length; i++) {
       if (message[i].match(this.regex)) {
-        let decipheredLetterCode = 65 + ((message.charCodeAt(i) - keyword.charCodeAt(i) + 26) % 26);
-        deciphered += String.fromCharCode(decipheredLetterCode);
+        let decryptedLetterCode = 65 + ((message.charCodeAt(i) - keyword.charCodeAt(i) + 26) % 26);
+        decryptedMessage += String.fromCharCode(decryptedLetterCode);
       } else {
-        deciphered += message[i];
+        decryptedMessage += message[i];
       }
     }
-    return this.direct ? deciphered : deciphered.split("").reverse().join("");
+    return this.direct ? decryptedMessage : decryptedMessage.split("").reverse().join("");
   }
 }
 
