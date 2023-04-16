@@ -13,8 +13,7 @@ const chainMaker = {
   },
 
   removeLink(position) {
-    if (!Number.isInteger(position) || position < 0 ||
-        position > this.chain.length || !this.chain.includes(this.chain[position - 1])) {
+    if (!Number.isInteger(position) || position < 0 || !this.chain.includes(this.chain[position - 1])) {
       this.chain = [];
       throw new Error("You can't remove incorrect link!");
     } else {
